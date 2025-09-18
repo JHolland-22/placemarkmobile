@@ -3,11 +3,14 @@ package org.setu.placemark.console.main
 import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
+var title : String = ""
+var description : String = ""
 
 fun main() {
     logger.info { "Launching Placemark Console App" }
     println("Placemark Kotlin App Version 1.0")
     var input: Int
+
     do {
         input = menu()
         when(input) {
@@ -46,8 +49,7 @@ fun menu() : Int {
 
 
 fun addPlacemark(){
-    var title : String
-    var description : String
+
 
     println("Add Placemark")
     println()
