@@ -45,10 +45,21 @@ fun menu() : Int {
 
 
 
-fun addPlacemark() {
-    logger.info { "Adding a new Placemark" }
-    println("You Chose Add Placemark")
+fun addPlacemark(){
+    var title : String
+    var description : String
+
+    println("Add Placemark")
+    println()
+    print("Enter a Title : ")
+    title = readLine()!!
+    print("Enter a Description : ")
+    description = readLine()!!
+    println("You entered $title for title")
+    println("You entered $description for description")
 }
+
+
 
 fun updatePlacemark() {
     logger.info { "Updating a Placemark" }
