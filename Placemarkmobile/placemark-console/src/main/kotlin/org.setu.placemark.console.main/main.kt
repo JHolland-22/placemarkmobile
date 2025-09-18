@@ -8,6 +8,7 @@ private val logger = KotlinLogging.logger {}
 var placemark = PlacemarkModel()
 val placemarks = ArrayList<PlacemarkModel>()
 
+
 fun main() {
     logger.info { "Launching Placemark Console App" }
     println("Placemark Kotlin App Version 2.0")
@@ -71,13 +72,32 @@ fun addPlacemark(){
 fun updatePlacemark() {
     println("Update Placemark")
     println()
-    print("Enter a new Title for [ " + placemark.title + " ] : ")
-    placemark.title = readLine()!!
-    print("Enter a new Description for [ " + placemark.description + " ] : ")
-    placemark.description = readLine()!!
-    println("You updated [ " + placemark.title + " ] for title " +
-            "and [ " + placemark.description + " ] for description")
+
+    listPlacemarks()
+
+    val searchId = getId()
+    val aPlacemark = search(searchId)
+
+    if (aPlacemark != null) {
+        print("Enter a new Title: ")
+        val newTitle = readLine()!!
+        print("Enter a new Description: ")
+        val newDescription = readLine()!!
+
+        if (newTitle.isNotEmpty() && newDescription.isNotEmpty()) {
+            aPlacemark.title = newTitle
+            aPlacemark.description = newDescription
+            logger.info("Placemark Updated : [ $aPlacemark ]")
+        } else {
+            logger.info("Placemark Not Updated")
+        }
+    } else {
+        println("Placemark Not Found...")
+    }
 }
+
+
+
 
 fun listPlacemarks() {
     println("List All Placemarks")
