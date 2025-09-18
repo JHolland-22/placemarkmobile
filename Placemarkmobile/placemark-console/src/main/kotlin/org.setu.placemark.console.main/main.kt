@@ -20,6 +20,7 @@ fun main() {
             1 -> addPlacemark()
             2 -> updatePlacemark()
             3 -> listPlacemarks()
+            4 -> searchPlacemark()
             -1 -> println("Exiting App")
             else -> println("Invalid Option")
         }
@@ -37,6 +38,7 @@ fun menu() : Int {
     println(" 1. Add Placemark")
     println(" 2. Update Placemark")
     println(" 3. List All Placemarks")
+    println(" 4. Search Placemark")
     println("-1. Exit")
     println()
     print("Enter Option : ")
@@ -59,6 +61,8 @@ fun addPlacemark(){
     if (placemark.title.isNotEmpty() && placemark.description.isNotEmpty()) {
         placemarks.add(placemark.copy())
         logger.info("Placemark Added : [ $placemark ]")
+        placemark.id++
+
     }
     else
         logger.info("Placemark Not Added")
@@ -80,3 +84,34 @@ fun listPlacemarks() {
     println()
     placemarks.forEach { println("$it") }
 }
+
+fun getId() : Long {
+    var strId : String? // String to hold user input
+    var searchId : Long // Long to hold converted id
+    print("Enter id to Search/Update : ")
+    strId = readLine()!!
+    searchId = if (strId.toLongOrNull() != null && !strId.isEmpty())
+        strId.toLong()
+    else
+        -9
+    return searchId
+}
+
+fun search(id: Long) : PlacemarkModel? {
+    var foundPlacemark: PlacemarkModel? = placemarks.find { p -> p.id == id }
+    return foundPlacemark
+}
+
+fun searchPlacemark() {
+    val searchId = getId()
+    val placemark = search(searchId)
+    if (placemark != null) {
+        println("Found Placemark:")
+        println("ID: ${placemark.id}")
+        println("Title: ${placemark.title}")
+        println("Description: ${placemark.description}")
+    } else {
+        println("Placemark with ID $searchId not found.")
+    }
+}
+
