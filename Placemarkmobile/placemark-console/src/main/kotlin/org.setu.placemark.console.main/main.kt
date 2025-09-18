@@ -9,9 +9,18 @@ fun main() {
 
     var input: Int
 
-    input = menu()
-
+    do {
+        input = menu()
+        when(input) {
+            1 -> println("You Chose Add Placemark")
+            -1 -> println("Exiting App")
+            else -> println("Invalid Option")
+        }
+        println()
+    } while (input != -1)
+    logger.info { "Shutting Down Placemark Console App" }
 }
+
 
 
 
