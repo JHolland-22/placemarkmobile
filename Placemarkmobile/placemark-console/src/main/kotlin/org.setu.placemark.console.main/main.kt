@@ -1,14 +1,16 @@
 package org.setu.placemark.console.main
 
 import mu.KotlinLogging
+import org.setu.placemark.console.models.PlacemarkModel
 
 private val logger = KotlinLogging.logger {}
-var title : String = ""
-var description : String = ""
+
+var placemark = PlacemarkModel()
 
 fun main() {
     logger.info { "Launching Placemark Console App" }
-    println("Placemark Kotlin App Version 1.0")
+    println("Placemark Kotlin App Version 2.0")
+
     var input: Int
 
     do {
@@ -16,10 +18,9 @@ fun main() {
         when(input) {
             1 -> addPlacemark()
             2 -> updatePlacemark()
-            3 -> listAllPlacemarks()
+            3 -> listPlacemarks()
             -1 -> println("Exiting App")
-            else -> println("Inva" +
-                    "lid Option")
+            else -> println("Invalid Option")
         }
         println()
     } while (input != -1)
@@ -27,17 +28,16 @@ fun main() {
 }
 
 fun menu() : Int {
-
     var option : Int
-    var input: String? = null
+    var input: String?
 
-    println("Main Menu")
+    println("MAIN MENU")
     println(" 1. Add Placemark")
     println(" 2. Update Placemark")
     println(" 3. List All Placemarks")
     println("-1. Exit")
     println()
-    print("Enter an integer : ")
+    print("Enter Option : ")
     input = readLine()!!
     option = if (input.toIntOrNull() != null && !input.isEmpty())
         input.toInt()
@@ -46,34 +46,28 @@ fun menu() : Int {
     return option
 }
 
-
-
 fun addPlacemark(){
-
-
     println("Add Placemark")
     println()
     print("Enter a Title : ")
-    title = readLine()!!
+    placemark.title = readLine()!!
     print("Enter a Description : ")
-    description = readLine()!!
-    println("You entered $title for title")
-    println("You entered $description for description")
+    placemark.description = readLine()!!
+    println("You entered [ " + placemark.title + " ] for title " +
+            "and [ " + placemark.description + " ] for description")
 }
-
-
 
 fun updatePlacemark() {
     println("Update Placemark")
     println()
-    print("Enter a new Title for [ $title ] : ")
-    title = readLine()!!
-    print("Enter a new Description for [ $description ] : ")
-    description = readLine()!!
-    println("You updated [ $title ] for title and [ $description ] for description")
+    print("Enter a new Title for [ " + placemark.title + " ] : ")
+    placemark.title = readLine()!!
+    print("Enter a new Description for [ " + placemark.description + " ] : ")
+    placemark.description = readLine()!!
+    println("You updated [ " + placemark.title + " ] for title " +
+            "and [ " + placemark.description + " ] for description")
 }
 
-fun listAllPlacemarks() {
-    logger.info { "Listing all Placemarks" }
+fun listPlacemarks() {
     println("You Chose List All Placemarks")
 }
