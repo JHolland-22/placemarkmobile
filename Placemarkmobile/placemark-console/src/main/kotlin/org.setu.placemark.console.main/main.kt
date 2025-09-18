@@ -5,9 +5,7 @@ import org.setu.placemark.console.models.PlacemarkModel
 
 private val logger = KotlinLogging.logger {}
 
-var placemark = PlacemarkModel()
 val placemarks = ArrayList<PlacemarkModel>()
-
 
 fun main() {
     logger.info { "Launching Placemark Console App" }
@@ -22,6 +20,7 @@ fun main() {
             2 -> updatePlacemark()
             3 -> listPlacemarks()
             4 -> searchPlacemark()
+            -99 -> dummyData()
             -1 -> println("Exiting App")
             else -> println("Invalid Option")
         }
@@ -39,7 +38,7 @@ fun menu() : Int {
     println(" 1. Add Placemark")
     println(" 2. Update Placemark")
     println(" 3. List All Placemarks")
-    println(" 4. Search Placemark")
+    println(" 4. Search Placemarks")
     println("-1. Exit")
     println()
     print("Enter Option : ")
@@ -52,18 +51,18 @@ fun menu() : Int {
 }
 
 fun addPlacemark(){
+    var aPlacemark = PlacemarkModel()
     println("Add Placemark")
     println()
     print("Enter a Title : ")
-    placemark.title = readLine()!!
+    aPlacemark.title = readLine()!!
     print("Enter a Description : ")
-    placemark.description = readLine()!!
+    aPlacemark.description = readLine()!!
 
-    if (placemark.title.isNotEmpty() && placemark.description.isNotEmpty()) {
-        placemarks.add(placemark.copy())
-        logger.info("Placemark Added : [ $placemark ]")
-        placemark.id++
-
+    if (aPlacemark.title.isNotEmpty() && aPlacemark.description.isNotEmpty()) {
+        aPlacemark.id = placemarks.size.toLong()
+        placemarks.add(aPlacemark.copy())
+        logger.info("Placemark Added : [ $aPlacemark ]")
     }
     else
         logger.info("Placemark Not Added")
@@ -72,37 +71,39 @@ fun addPlacemark(){
 fun updatePlacemark() {
     println("Update Placemark")
     println()
-
     listPlacemarks()
-
-    val searchId = getId()
+    var searchId = getId()
     val aPlacemark = search(searchId)
 
-    if (aPlacemark != null) {
-        print("Enter a new Title: ")
-        val newTitle = readLine()!!
-        print("Enter a new Description: ")
-        val newDescription = readLine()!!
-
-        if (newTitle.isNotEmpty() && newDescription.isNotEmpty()) {
-            aPlacemark.title = newTitle
-            aPlacemark.description = newDescription
-            logger.info("Placemark Updated : [ $aPlacemark ]")
-        } else {
-            logger.info("Placemark Not Updated")
-        }
-    } else {
-        println("Placemark Not Found...")
+    if(aPlacemark != null) {
+        print("Enter a new Title for [ " + aPlacemark.title + " ] : ")
+        aPlacemark.title = readLine()!!
+        print("Enter a new Description for [ " + aPlacemark.description + " ] : ")
+        aPlacemark.description = readLine()!!
+        println(
+            "You updated [ " + aPlacemark.title + " ] for title " +
+                    "and [ " + aPlacemark.description + " ] for description"
+        )
     }
+    else
+        println("Placemark Not Updated...")
 }
-
-
-
 
 fun listPlacemarks() {
     println("List All Placemarks")
     println()
     placemarks.forEach { println("$it") }
+}
+
+fun searchPlacemark() {
+
+    var searchId = getId()
+    val aPlacemark = search(searchId)
+
+    if(aPlacemark != null)
+        println("Placemark Details [ $aPlacemark ]")
+    else
+        println("Placemark Not Found...")
 }
 
 fun getId() : Long {
@@ -122,16 +123,8 @@ fun search(id: Long) : PlacemarkModel? {
     return foundPlacemark
 }
 
-fun searchPlacemark() {
-    val searchId = getId()
-    val placemark = search(searchId)
-    if (placemark != null) {
-        println("Found Placemark:")
-        println("ID: ${placemark.id}")
-        println("Title: ${placemark.title}")
-        println("Description: ${placemark.description}")
-    } else {
-        println("Placemark with ID $searchId not found.")
-    }
+fun dummyData() {
+    placemarks.add(PlacemarkModel(1, "New York New York", "So Good They Named It Twice"))
+    placemarks.add(PlacemarkModel(2, "Ring of Kerry", "Some place in the Kingdom"))
+    placemarks.add(PlacemarkModel(3, "Waterford City", "You get great Blaas Here!!"))
 }
-
