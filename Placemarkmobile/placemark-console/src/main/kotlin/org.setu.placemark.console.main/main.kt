@@ -64,8 +64,13 @@ fun addPlacemark(){
 
 
 fun updatePlacemark() {
-    logger.info { "Updating a Placemark" }
-    println("You Chose Update Placemark")
+    println("Update Placemark")
+    println()
+    print("Enter a new Title for [ $title ] : ")
+    title = readLine()!!
+    print("Enter a new Description for [ $description ] : ")
+    description = readLine()!!
+    println("You updated [ $title ] for title and [ $description ] for description")
 }
 
 fun listAllPlacemarks() {
