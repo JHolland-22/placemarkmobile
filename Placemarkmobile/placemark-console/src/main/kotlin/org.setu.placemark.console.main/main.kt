@@ -74,20 +74,34 @@ fun updatePlacemark() {
     listPlacemarks()
     var searchId = getId()
     val aPlacemark = search(searchId)
+    //val newTitle
+    //val newDescription
 
     if(aPlacemark != null) {
         print("Enter a new Title for [ " + aPlacemark.title + " ] : ")
-        aPlacemark.title = readLine()!!
+        val newTitle = readLine()!!
         print("Enter a new Description for [ " + aPlacemark.description + " ] : ")
-        aPlacemark.description = readLine()!!
-        println(
-            "You updated [ " + aPlacemark.title + " ] for title " +
-                    "and [ " + aPlacemark.description + " ] for description"
-        )
+        val newDescription = readLine()!!
+
+        if (newTitle.isEmpty() || newDescription.isEmpty()) {
+            println("No changes made. Both title and description must be provided.")
+            logger.info { "Update skipped: user entered empty values" }
+        } else {
+            aPlacemark.title = newTitle
+            aPlacemark.description = newDescription
+            println("Placemark updated: [${aPlacemark.title}] , [${aPlacemark.description}]")
+            logger.info { "Placemark Updated : [ $aPlacemark ]" }
+        }
+    } else {
+
+        println("Placemark Not Found...")
     }
-    else
-        println("Placemark Not Updated...")
 }
+//https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.text/is-null-or-empty.html
+//https://www.baeldung.com/kotlin/check-empty-string
+
+
+
 
 fun listPlacemarks() {
     println("List All Placemarks")
