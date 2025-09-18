@@ -1,4 +1,5 @@
-#!/usr/bin/env kotlin
+package org.setu.placemark.console.main
+
 import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
@@ -6,23 +7,21 @@ private val logger = KotlinLogging.logger {}
 fun main() {
     logger.info { "Launching Placemark Console App" }
     println("Placemark Kotlin App Version 1.0")
-
     var input: Int
-
     do {
         input = menu()
         when(input) {
-            1 -> println("You Chose Add Placemark")
+            1 -> addPlacemark()
+            2 -> updatePlacemark()
+            3 -> listAllPlacemarks()
             -1 -> println("Exiting App")
-            else -> println("Invalid Option")
+            else -> println("Inva" +
+                    "lid Option")
         }
         println()
     } while (input != -1)
     logger.info { "Shutting Down Placemark Console App" }
 }
-
-
-
 
 fun menu() : Int {
 
@@ -44,3 +43,19 @@ fun menu() : Int {
     return option
 }
 
+
+
+fun addPlacemark() {
+    logger.info { "Adding a new Placemark" }
+    println("You Chose Add Placemark")
+}
+
+fun updatePlacemark() {
+    logger.info { "Updating a Placemark" }
+    println("You Chose Update Placemark")
+}
+
+fun listAllPlacemarks() {
+    logger.info { "Listing all Placemarks" }
+    println("You Chose List All Placemarks")
+}
