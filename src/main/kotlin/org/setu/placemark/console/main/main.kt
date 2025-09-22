@@ -1,11 +1,12 @@
 package org.setu.placemark.console.main
 
 import mu.KotlinLogging
+import org.setu.placemark.console.models.PlacemarkMemStore
 import org.setu.placemark.console.models.PlacemarkModel
 
 private val logger = KotlinLogging.logger {}
 
-val placemarks = ArrayList<PlacemarkModel>()
+val placemarks = PlacemarkMemStore()
 
 fun main() {
     logger.info { "Launching Placemark Console App" }
