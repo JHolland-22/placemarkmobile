@@ -19,5 +19,11 @@ tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(23)
+    jvmToolchain(22)
+}
+
+
+tasks.register<JavaExec>("run") {
+    mainClass.set("org.setu.placemark.console.main.MainKt")
+    classpath = sourceSets["main"].runtimeClasspath
 }

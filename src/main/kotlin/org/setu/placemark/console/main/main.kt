@@ -42,7 +42,7 @@ fun menu() : Int {
     println("-1. Exit")
     println()
     print("Enter Option : ")
-    input = readLine()!!
+    input = readLine() ?: "-1"
     option = if (input.toIntOrNull() != null && !input.isEmpty())
         input.toInt()
     else
