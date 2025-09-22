@@ -1,13 +1,14 @@
 package org.setu.placemark.console.controllers
 
 import mu.KotlinLogging
-import org.setu.placemark.console.models.PlacemarkMemStore
+import org.setu.placemark.console.models.PlacemarkJSONStore
 import org.setu.placemark.console.models.PlacemarkModel
 import org.setu.placemark.console.views.PlacemarkView
 
 class PlacemarkController {
 
-    val placemarks = PlacemarkMemStore()
+    val placemarks = PlacemarkJSONStore()
+
     val placemarkView = PlacemarkView()
     val logger = KotlinLogging.logger {}
 
@@ -41,9 +42,13 @@ class PlacemarkController {
             logger.info("Placemark Not Added")
     }
 
-    fun list() {
-        placemarkView.listPlacemarks(placemarks)
+    fun list(placemarks : PlacemarkJSONStore) {
+        println("List All Placemarks")
+        println()
+        placemarks.logAll()
+        println()
     }
+
 
     fun update() {
 
