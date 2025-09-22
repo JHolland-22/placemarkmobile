@@ -1,31 +1,19 @@
 package org.setu.placemark.console.models
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
+import mu.KotlinLogging
 
-import org.setu.placemark.console.helpers.*
-import java.util.*
+private val logger = KotlinLogging.logger {}
+var lastId = 0L
 
-val JSON_FILE = "placemarks.json"
-val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
-val listType = object : TypeToken<ArrayList<PlacemarkModel>>() {}.type
-
-fun generateRandomId(): Long {
-    return Random().nextLong()
+internal fun getId(): Long {
+    return lastId++
 }
 
-class PlacemarkJSONStore : PlacemarkStore {
+class PlacemarkMemStore : PlacemarkStore {
 
-    var placemarks = mutableListOf<PlacemarkModel>()
+    val placemarks = ArrayList<PlacemarkModel>()
 
-    init {
-        if (exists(JSON_FILE)) {
-            deserialize()
-        }
-    }
-
-    override fun findAll(): MutableList<PlacemarkModel> {
+    override fun findAll(): List<PlacemarkModel> {
         return placemarks
     }
 
@@ -35,9 +23,9 @@ class PlacemarkJSONStore : PlacemarkStore {
     }
 
     override fun create(placemark: PlacemarkModel) {
-        placemark.id = generateRandomId()
+        placemark.id = getId()
         placemarks.add(placemark)
-        serialize()
+        logAll()
     }
 
     override fun update(placemark: PlacemarkModel) {
@@ -46,20 +34,15 @@ class PlacemarkJSONStore : PlacemarkStore {
             foundPlacemark.title = placemark.title
             foundPlacemark.description = placemark.description
         }
-        serialize()
+    }
+
+
+
+    override fun delete(placemark: PlacemarkModel) {
+        placemarks.remove(placemark)
     }
 
     internal fun logAll() {
         placemarks.forEach { println("$it") }
-    }
-
-    private fun serialize() {
-        val jsonString = gsonBuilder.toJson(placemarks, listType)
-        write(JSON_FILE, jsonString)
-    }
-
-    private fun deserialize() {
-        val jsonString = read(JSON_FILE)
-        placemarks = Gson().fromJson(jsonString, listType)
     }
 }

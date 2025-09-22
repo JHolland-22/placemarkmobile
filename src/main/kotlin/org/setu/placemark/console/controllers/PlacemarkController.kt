@@ -1,16 +1,21 @@
 package org.setu.placemark.console.controllers
 
 import mu.KotlinLogging
-import org.setu.placemark.console.models.PlacemarkJSONStore
+import org.setu.placemark.console.models.PlacemarkMemStore
 import org.setu.placemark.console.models.PlacemarkModel
 import org.setu.placemark.console.views.PlacemarkView
 
 class PlacemarkController {
 
-    val placemarks = PlacemarkJSONStore()
-
+    //val placemarks = PlacemarkMemStore()
+    val placemarks = PlacemarkMemStore()
     val placemarkView = PlacemarkView()
     val logger = KotlinLogging.logger {}
+
+    init {
+        logger.info { "Launching Placemark Console App" }
+        println("Placemark Kotlin App Version 3.0")
+    }
 
     fun start() {
         var input: Int
@@ -22,6 +27,7 @@ class PlacemarkController {
                 2 -> update()
                 3 -> list()
                 4 -> search()
+                5 -> delete()
                 -99 -> dummyData()
                 -1 -> println("Exiting App")
                 else -> println("Invalid Option")
@@ -34,26 +40,22 @@ class PlacemarkController {
     fun menu() :Int { return placemarkView.menu() }
 
     fun add(){
-        val aPlacemark = PlacemarkModel()
+        var aPlacemark = PlacemarkModel()
 
         if (placemarkView.addPlacemarkData(aPlacemark))
             placemarks.create(aPlacemark)
         else
-            logger.info("Placemark Not Added")
+            println("Placemark Not Added")
     }
 
-    fun list(placemarks : PlacemarkJSONStore) {
-        println("List All Placemarks")
-        println()
-        placemarks.logAll()
-        println()
+    fun list() {
+        placemarkView.listPlacemarks(placemarks)
     }
-
 
     fun update() {
 
         placemarkView.listPlacemarks(placemarks)
-        val searchId = placemarkView.getId()
+        var searchId = placemarkView.getId()
         val aPlacemark = search(searchId)
 
         if(aPlacemark != null) {
@@ -63,10 +65,10 @@ class PlacemarkController {
                 logger.info("Placemark Updated : [ $aPlacemark ]")
             }
             else
-                logger.info("Placemark Not Updated")
+                println("\nPlacemark Not Updated")
         }
         else
-            println("Placemark Not Updated...")
+            println("\nPlacemark Not Updated...")
     }
 
     fun search() {
@@ -76,8 +78,22 @@ class PlacemarkController {
 
 
     fun search(id: Long) : PlacemarkModel? {
-        val foundPlacemark = placemarks.findOne(id)
+        var foundPlacemark = placemarks.findOne(id)
         return foundPlacemark
+    }
+
+    fun delete() {
+        placemarkView.listPlacemarks(placemarks)
+        var searchId = placemarkView.getId()
+        val aPlacemark = search(searchId)
+
+        if(aPlacemark != null) {
+            placemarks.delete(aPlacemark)
+            println("Placemark Deleted...")
+            placemarkView.listPlacemarks(placemarks)
+        }
+        else
+            println("Placemark Not Deleted...")
     }
 
     fun dummyData() {
